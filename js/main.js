@@ -13,6 +13,9 @@ new Vue({
         completedTasks: [],
         isEditing: false,
         editIndex: null,
+        showReturnForm: false,
+        returnTaskIndex: null,
+        returnReason: ''
     },
     methods: {
         openForm() {
@@ -65,6 +68,37 @@ new Vue({
         moveToInProgress(index) {
             const task = this.tasks.splice(index, 1)[0]; // Удаляем задачу из первого столбца
             this.inProgressTasks.push(task); // Добавляем задачу во второй столбец
+        },
+        moveToTesting(index) { // Новый метод для перемещения в тестирование
+            const task = this.inProgressTasks.splice(index, 1)[0]; // Удаляем задачу из "Задачи в работе"
+            this.testingTasks.push(task); // Добавляем задачу в "Тестирование"
+        },
+        moveToCompleted(index) {
+            const task = this.testingTasks.splice(index, 1)[0]; // Удаляем задачу из "Тестирование"
+            this.completedTasks.push(task); // Добавляем задачу в "Выполненные задачи"
+        },
+        openReturnForm(index) {
+            this.showReturnForm = true; // Показываем форму возврата
+            this.returnTaskIndex = index; // Сохраняем индекс задачи для возврата
+            this.returnReason = ''; // Очищаем причину возврата
+        },
+        closeReturnForm() {
+            this.showReturnForm = false; // Скрываем форму возврата
+            this.returnTaskIndex = null; // Сбрасываем индекс задачи
+            this.returnReason = ''; // Очищаем причину возврата
+        },
+        returnTaskToInProgress() {
+            if (!this.returnReason.trim()) {
+                alert('Укажите причину возврата!');
+                return;
+            }
+
+            const task = this.testingTasks.splice(this.returnTaskIndex, 1)[0]; // Удаляем задачу из "Тестирование"
+            task.returnReason = this.returnReason; // Добавляем причину возврата к задаче
+            this.inProgressTasks.push(task); // Добавляем задачу в "Задачи в работе"
+
+            this.closeReturnForm(); // Закрываем форму
         }
     }
+
 });

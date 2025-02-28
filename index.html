@@ -51,10 +51,27 @@
         <div class="task" v-for="(task, index) in inProgressTasks" :key="index">
             <p><strong>Заголовок:</strong> {{ task.title }}</p>
             <p><strong>Описание:</strong> {{ task.description }}</p>
-            <p><strong>Дедлайн:</strong> {{ task.deadline }}</p></div>
+            <p><strong>Дедлайн:</strong> {{ task.deadline }}</p>
+            <p v-if="task.returnReason"><strong>Причина возврата:</strong> {{ task.returnReason }}</p>
+            <button @click="moveToTesting(index)">Тестирование</button>
+        </div>
     </div>
     <div class="column">
         <h2>Тесты</h2>
+        <div class="task" v-for="(task, index) in testingTasks" :key="index">
+            <p><strong>Дата создания:</strong> {{ task.createdAt }}</p>
+            <p><strong>Заголовок:</strong> {{ task.title }}</p>
+            <p><strong>Описание:</strong> {{ task.description }}</p>
+            <p><strong>Дедлайн:</strong> {{ task.deadline }}</p>
+            <button @click="moveToCompleted(index)">Выполнить</button>
+            <button @click="openReturnForm(index)">Вернуть в работу</button>
+        </div>
+        <form v-if="showReturnForm" @submit.prevent="returnTaskToInProgress">
+            <label for="reason">Причина возврата:</label>
+            <textarea id="reason" v-model="returnReason" required></textarea>
+            <button type="submit">Подтвердить</button>
+            <button type="button" @click="closeReturnForm()">Отмена</button>
+        </form>
     </div>
     <div class="column">
         <h2>Готово</h2>
