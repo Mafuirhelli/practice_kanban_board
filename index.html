@@ -32,7 +32,15 @@
     </div>
     <div class="column">
         <h2>Запланированные задачи</h2>
-
+        <div class="task" v-for="(task, index) in tasks" :key="index">
+            <p><strong>Дата создания:</strong> {{ task.createdAt }}</p>
+            <p><strong>Заголовок:</strong> {{ task.title }}</p>
+            <p><strong>Описание:</strong> {{ task.description }}</p>
+            <p><strong>Дедлайн:</strong> {{ task.deadline }}</p>
+            <button @click="editTask(index)">Редактировать</button>
+            <button @click="deleteTask(index)">Удалить</button>
+            <button @click="moveToInProgress(index)">В работу</button> <!-- Добавляем кнопку "В работу" -->
+        </div>
     </div>
     <div class="column">
         <h2>Задачи в работе</h2>
