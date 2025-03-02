@@ -3,17 +3,19 @@ new Vue({
     data: {
         showForm: false,
         showReturnForm: false,
+        showModal: false,
         returnReason: '',
-        editIndex: null, // Индекс задачи, которая сейчас редактируется
+        editIndex: null,
+        currentTask: {},
         newTask: {
             title: '',
             description: '',
             deadline: ''
         },
-        tasks: [], // Запланированные задачи
-        inProgressTasks: [], // Задачи в работе
-        testingTasks: [], // Тестирование
-        completedTasks: [] // Выполненные задачи
+        tasks: [],
+        inProgressTasks: [],
+        testingTasks: [],
+        completedTasks: []
     },
     methods: {
         openForm() {
@@ -29,45 +31,39 @@ new Vue({
                 description: this.newTask.description,
                 deadline: this.newTask.deadline,
                 createdAt: new Date().toLocaleString(),
-                lastEditedAt: null, // Добавляем поле lastEditedAt и инициализируем его как null
+                lastEditedAt: null,
                 status: 'Запланировано'
             };
             this.tasks.push(newTask);
             this.closeForm();
         },
-        deleteTask(index) {
-            // Удаляем задачу из массива tasks
-            this.tasks.splice(index, 1);
+        deleteTask(index, arrayName) {
+            this[arrayName].splice(index, 1);
         },
         moveToInProgress(index) {
             const task = this.tasks[index];
             if (task) {
                 task.status = 'В работе';
-                this.inProgressTasks.push(task); // Добавляем задачу в inProgressTasks
-                this.tasks.splice(index, 1); // Удаляем задачу из tasks
+                this.inProgressTasks.push(task);
+                this.tasks.splice(index, 1);
             }
         },
-        startEdit(index) {
-            this.editIndex = index; // Переключаем задачу в режим редактирования
+        startEdit(index, arrayName) {
+            this.editIndex = index;
+            this.currentTask = { ...this[arrayName][index] };
+            this.showModal = true;
         },
-        saveEdit(index) {
+        saveEdit() {
             if (this.editIndex !== null) {
-                // Определяем, в каком массиве находится задача
-                let taskArray = this.tasks;
-                if (this.inProgressTasks[this.editIndex]) {
-                    taskArray = this.inProgressTasks;
-                } else if (this.testingTasks[this.editIndex]) {
-                    taskArray = this.testingTasks;
-                }
-                const task = taskArray[this.editIndex];
-                if (task) {
-                    task.lastEditedAt = new Date().toLocaleString(); // Добавляем временную метку редактирования
+                const taskArray = this.getTaskArray();
+                if (taskArray) {
+                    taskArray[this.editIndex] = { ...this.currentTask, lastEditedAt: new Date().toLocaleString() };
                 }
             }
-            this.editIndex = null; // Выходим из режима редактирования
+            this.showModal = false;
         },
         cancelEdit() {
-            this.editIndex = null; // Отменяем редактирование
+            this.showModal = false;
         },
         openReturnForm(index) {
             this.returnIndex = index;
@@ -80,11 +76,11 @@ new Vue({
         returnTaskToInProgress() {
             const task = this.testingTasks[this.returnIndex];
             if (task) {
-                task.returnReason = this.returnReason; // Сохраняем причину возврата
+                task.returnReason = this.returnReason;
                 task.status = 'Возвращено в работу';
-                task.lastEditedAt = new Date().toLocaleString(); // Добавляем временную метку при возврате
-                this.inProgressTasks.push(task); // Добавляем задачу обратно в "Задачи в работе"
-                this.testingTasks.splice(this.returnIndex, 1); // Удаляем задачу из "Тестирования"
+                task.lastEditedAt = new Date().toLocaleString();
+                this.inProgressTasks.push(task);
+                this.testingTasks.splice(this.returnIndex, 1);
             }
             this.closeReturnForm();
         },
@@ -92,8 +88,8 @@ new Vue({
             const task = this.inProgressTasks[index];
             if (task) {
                 task.status = 'Тестирование';
-                this.testingTasks.push(task); // Добавляем задачу в testingTasks
-                this.inProgressTasks.splice(index, 1); // Удаляем задачу из inProgressTasks
+                this.testingTasks.push(task);
+                this.inProgressTasks.splice(index, 1);
             }
         },
         moveToCompleted(index) {
@@ -106,10 +102,34 @@ new Vue({
                 } else {
                     task.status = 'Выполнено';
                 }
-                task.lastEditedAt = new Date().toLocaleString(); // Добавляем временную метку при завершении
-                this.completedTasks.push(task); // Добавляем задачу в completedTasks
-                this.testingTasks.splice(index, 1); // Удаляем задачу из testingTasks
+                task.lastEditedAt = new Date().toLocaleString();
+                this.completedTasks.push(task);
+                this.testingTasks.splice(index, 1);
             }
+        },
+        getTaskClass(task) {
+            const deadlineDate = new Date(task.deadline);
+            const currentDate = new Date();
+            const diffTime = deadlineDate - currentDate;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            if (diffDays < 0) {
+                return 'overdue';
+            } else if (diffDays <= 2) {
+                return 'urgent';
+            }
+            return '';
+        },
+        getTaskArray() {
+            if (this.editIndex !== null) {
+                if (this.inProgressTasks[this.editIndex]) {
+                    return this.inProgressTasks;
+                } else if (this.testingTasks[this.editIndex]) {
+                    return this.testingTasks;
+                } else {
+                    return this.tasks;
+                }
+            }
+            return null;
         }
     }
 });

@@ -1,11 +1,12 @@
-body{
+body {
     margin: 0;
     font-family: "Marck Script", serif;
     font-weight: 400;
     font-style: normal;
     font-size: 20px;
+    color: white;
+}
 
-    }
 #app {
     display: flex;
     justify-content: space-between;
@@ -13,30 +14,129 @@ body{
     padding: 20px;
     background: url(https://kartinki.pics/uploads/posts/2021-07/thumbs/1626140026_9-kartinkin-com-p-chernoe-derevo-tekstura-besshovnaya-krasiv-9.jpg);
     background-size: cover;
-    min-height: 100vh;
-
+    min-height: 95.9vh;
 }
 
 .column {
     display: flex;
     flex-direction: column;
     width: 15%;
-    background: url(https://img.freepik.com/free-photo/white-paper-texture_1194-2301.jpg);
+    background: rgba(255, 0, 0, 0.5) url(https://zefirka.club/wallpapers/uploads/posts/2023-03/1678717475_zefirka-club-p-skomkannaya-bumaga-na-zelenom-fone-84.jpg);
     border-radius: 10px;
     padding: 20px;
-    overflow-y: auto; /* Добавляем прокрутку, если карточек много */
+    overflow-y: auto;
     box-shadow: 0px 5px 10px 2px rgba(0, 40, 118, 0.2) inset;
+}
+
+.first {
+    transform: rotate(3.5deg);
+    filter: grayscale(80%);
+}
+
+.second {
+    transform: rotate(-3.5deg);
+    filter: grayscale(45%) hue-rotate(45deg);
+}
+
+.third {
+    transform: rotate(2.5deg);
+    filter: grayscale(45%) sepia(100%) hue-rotate(180deg);
+}
+
+.fourth {
+    transform: rotate(3deg);
+    filter: grayscale(45%) hue-rotate(-45deg);
+}
+
+.fifth {
+    transform: rotate(-2.5deg);
+    filter: grayscale(45%) hue-rotate(-90deg);
+}
+
+.modal {
+    display: flex;
+    color: darkblue;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+    background: url(https://wallpapers.com/images/featured/note-paper-png-uo14l0ju7ermpmqe.jpg) center center;
+    background-size: 155% 170%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 8px;
+    transform: rotate(-2.5deg);
+    filter: grayscale(45%) hue-rotate(-90deg);
+}
+.modal-form {
+    mix-blend-mode: multiply;
+    border: none;
+    transform: rotate(-3deg);
+    filter: contrast(100%)hue-rotate(-45deg);
+}
+
+.task {
+    padding: 10px;
+    background: url(https://static.vecteezy.com/system/resources/thumbnails/055/778/547/small_2x/aged-lined-paper-sheet-shows-wrinkles-and-tears-png.png) center center;
+    color: darkblue;
+    background-size: 150% 150%;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.task::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(255,0,0,1) 100%);
+    border-radius: 50%;
+    transform: translateX(-50%);
+}
+
+.second .task::before {
+    content: '';
+    background: url(https://static.vecteezy.com/system/resources/thumbnails/028/824/928/small_2x/yellow-paper-tape-isolated-element-png.png) no-repeat top center;
+    background-size: cover;
+    width: 115px;
+    height: 40px;
+    border-radius: 0;
+}
+
+.task.orange {
+    border: 30px solid orange;
+}
+
+.task.red {
+    border: 20px solid red;
 }
 
 .column h2 {
     text-align: center;
     color: indianred;
-    mix-blend-mode: multiply;
+    mix-blend-mode: difference;
     margin-bottom: 15px;
-    font-family: "Rampart One", serif;
+    font-family: "Monomakh", serif;
     font-weight: 400;
     font-style: normal;
-    text-shadow: #FC0 1px 0 10px;}
+    text-shadow: #FC0 1px 0 10px;
+    transform: rotate(-3.5deg);
+}
+
 button {
     mix-blend-mode: multiply;
     background-color: indianred;
@@ -54,8 +154,8 @@ button {
 
 button:hover {
     background-color: pink;
-
 }
+
 form input, form textarea {
     width: 100%;
     padding: 5px;
