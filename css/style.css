@@ -107,7 +107,6 @@ body {
     border-radius: 50%;
     transform: translateX(-50%);
 }
-
 .second .task::before {
     content: '';
     background: url(https://static.vecteezy.com/system/resources/thumbnails/028/824/928/small_2x/yellow-paper-tape-isolated-element-png.png) no-repeat top center;
@@ -116,7 +115,6 @@ body {
     height: 40px;
     border-radius: 0;
 }
-
 .task.urgent  {
     box-shadow: 0 0 4px orangered, 0 0 8px coral, 0 0 12px orange, 0 0 16px darkorange, 0 0 20px coral;
 
