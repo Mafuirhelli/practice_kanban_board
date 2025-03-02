@@ -28,29 +28,29 @@ body {
     box-shadow: 0px 5px 10px 2px rgba(0, 40, 118, 0.2) inset;
 }
 
-.first {
+.column.first {
     transform: rotate(3.5deg);
     filter: grayscale(80%);
 }
 
-.second {
+.second.column {
     transform: rotate(-3.5deg);
-    filter: grayscale(45%) hue-rotate(45deg);
+    filter: grayscale(45%) hue-rotate(15deg);
 }
 
-.third {
+.column.third {
     transform: rotate(2.5deg);
-    filter: grayscale(45%) sepia(100%) hue-rotate(180deg);
+    filter: grayscale(45%) hue-rotate(30deg);
 }
 
-.fourth {
+.column.fourth {
     transform: rotate(3deg);
-    filter: grayscale(45%) hue-rotate(-45deg);
+    filter: grayscale(45%) hue-rotate(-15deg);
 }
 
-.fifth {
+.column.fifth {
     transform: rotate(-2.5deg);
-    filter: grayscale(45%) hue-rotate(-90deg);
+    filter: hue-rotate(-30deg);
 }
 
 .modal {
@@ -117,12 +117,13 @@ body {
     border-radius: 0;
 }
 
-.task.orange {
-    border: 30px solid orange;
+.task.urgent  {
+    box-shadow: 0 0 4px orangered, 0 0 8px coral, 0 0 12px orange, 0 0 16px darkorange, 0 0 20px coral;
+
 }
 
-.task.red {
-    border: 20px solid red;
+.task.overdue   {
+    box-shadow: 0 0 4px red, 0 0 8px orangered, 0 0 12px red, 0 0 16px red, 0 0 20px darkred;
 }
 
 .column h2 {
